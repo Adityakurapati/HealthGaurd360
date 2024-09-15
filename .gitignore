@@ -1,0 +1,16 @@
+# Node modules and React build files
+client/node_modules/
+client/build/
+
+# Python virtual environment and other unnecessary files
+server/venv/
+server/__pycache__/
+server/*.pyc
+server/*.pyo
+server/*.egg-info/
+server/.DS_Store
+
+# Ignore environment and config files
+client/.env
+server/.env
+

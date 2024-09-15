@@ -1,0 +1,114 @@
+/* Container for the form */
+.container {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 30px;
+        background-color: #101F33;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        color: #ffffff;
+}
+
+/* Form title */
+.title {
+        font-size: 2.5rem;
+        text-align: center;
+        margin-bottom: 20px;
+        color: #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+}
+
+/* Icons for input fields */
+.icon {
+        margin-right: 10px;
+        color: #5AC4FF;
+        font-size: 2.5rem;
+}
+
+/* Form structure */
+.form {
+        display: flex;
+        flex-direction: column;
+}
+
+/* Form group container */
+.formGroup {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+}
+
+/* Labels */
+.label {
+        margin-bottom: 5px;
+        font-weight: bold;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+}
+
+/* Input fields */
+.input {
+        padding: 12px;
+        border-radius: 8px;
+        border: 2px solid #5AC4FF;
+        background-color: #F0F4FC;
+        font-size: 1rem;
+        outline: none;
+        transition: all 0.3s ease;
+}
+
+/* Input fields focus effect */
+.input:focus {
+        border-color: #368dfd;
+        box-shadow: 0 0 8px rgba(54, 115, 253, 0.5);
+}
+
+/* Input icon next to the labels */
+.inputIcon {
+        margin-right: 8px;
+        color: #5AC4FF;
+}
+
+/* Submit button */
+.submitButton {
+        padding: 15px;
+        border: none;
+        background-color: #5AC4FF;
+        color: white;
+        font-size: 1.2rem;
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+}
+
+/* Submit button hover effect */
+.submitButton:hover {
+        background-color: #368dfd;
+}
+
+.submitButton:active {
+        transform: scale(0.95);
+}
+
+/* Form responsiveness for mobile */
+@media (max-width: 768px) {
+        .container {
+                padding: 20px;
+        }
+
+        .input {
+                font-size: 0.9rem;
+        }
+
+        .submitButton {
+                font-size: 1rem;
+        }
+
+        .title {
+                font-size: 2rem;
+        }
+}

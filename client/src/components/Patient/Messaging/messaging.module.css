@@ -1,0 +1,167 @@
+/* Container Styles */
+.messagingAppContainer {
+        display: flex;
+        height: 100vh;
+        background: #121212;
+        /* Dark background for overall app */
+        color: #e0e0e0;
+        /* Light text color for contrast */
+}
+
+/* Doctor List Styles */
+.doctorList {
+        width: 30%;
+        padding: 20px;
+        background: #1e1e1e;
+        /* Slightly lighter dark background */
+        overflow-y: auto;
+        /* Scroll if content overflows */
+}
+
+.doctorList h3 {
+        margin-bottom: 20px;
+        font-size: 1.6em;
+        /* Slightly larger font size */
+        color: #e0e0e0;
+        /* Light text color for headings */
+}
+
+/* Doctor Item Styles */
+.doctorItem {
+        padding: 15px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 8px;
+        /* Rounded corners */
+        border: 1px solid #333;
+        /* Subtle border for items */
+        margin-bottom: 10px;
+        background-color: #292929;
+        /* Dark background for items */
+        transition: background-color 0.3s, transform 0.2s;
+        /* Smooth transition */
+}
+
+.doctorItem:hover {
+        background-color: #424242;
+        /* Slightly lighter on hover */
+        transform: scale(1.02);
+        /* Slight zoom effect */
+}
+
+.active {
+        background-color: #0288d1;
+        /* Active color */
+        color: #fff;
+        /* White text for active items */
+}
+
+.unreadBubble {
+        background-color: #ff5722;
+        /* Vibrant orange for unread messages */
+        color: #fff;
+        /* White text inside bubble */
+        border-radius: 50%;
+        /* Circular bubble */
+        padding: 5px 10px;
+        font-size: 0.8em;
+        /* Smaller font size for bubble */
+}
+
+/* Message View Styles */
+.messageView {
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        background: #1e1e1e;
+        /* Match background color with doctor list */
+}
+
+/* Message List Styles */
+.messageList {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 20px;
+        background: #121212;
+        /* Match main container background */
+}
+
+/* Message Styles */
+.message {
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        /* Rounded corners */
+        border: 1px solid #333;
+        /* Subtle border for messages */
+        background-color: #292929;
+        /* Dark background for messages */
+        transition: background-color 0.3s;
+        /* Smooth transition on hover */
+}
+
+.message:hover {
+        background-color: #424242;
+        /* Slightly lighter on hover */
+}
+
+/* Message Input Styles */
+.messageInput {
+        display: flex;
+        padding: 15px;
+        border-top: 1px solid #333;
+        /* Border for separation */
+        background: #1e1e1e;
+        /* Match background color */
+        box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.2);
+        /* Shadow for depth */
+}
+
+/* Textarea Styles */
+.textarea {
+        flex-grow: 1;
+        padding: 10px;
+        border: 1px solid #333;
+        /* Subtle border */
+        border-radius: 8px;
+        /* Rounded corners */
+        background: #292929;
+        /* Dark background for textarea */
+        color: #e0e0e0;
+        /* Light text color */
+        resize: none;
+        /* Prevent resizing */
+}
+
+/* Send Button Styles */
+.sendButton {
+        padding: 10px 20px;
+        background-color: #0288d1;
+        /* Primary button color */
+        color: #fff;
+        /* White text on button */
+        border: none;
+        margin-left: 10px;
+        border-radius: 8px;
+        /* Rounded corners */
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+        /* Smooth transition */
+}
+
+.sendButton:hover {
+        background-color: #01579b;
+        /* Darker shade on hover */
+        transform: scale(1.05);
+        /* Slight zoom effect */
+}
+
+/* No Doctor Selected Styles */
+.noDoctorSelected {
+        text-align: center;
+        padding: 20px;
+        color: #666;
+        /* Softer text color for inactive state */
+}

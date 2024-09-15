@@ -1,0 +1,110 @@
+/* Gradient background animation */
+@keyframes gradientShift {
+        0% {
+                background-position: 0% 50%;
+        }
+
+        50% {
+                background-position: 100% 50%;
+        }
+
+        100% {
+                background-position: 0% 50%;
+        }
+}
+
+.container {
+        background: linear-gradient(135deg, #0f172a, #2d2b42, #3a3a55);
+        background-size: 200% 200%;
+        animation: gradientShift 15s ease infinite;
+        padding: 6rem;
+        border-radius: 1.5rem;
+}
+
+/* Large Button styling with hover effect */
+.button {
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.2s ease-in-out;
+}
+
+.button::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+}
+
+.button:hover::after {
+        opacity: 1;
+}
+
+@keyframes pulse {
+        0% {
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.5);
+        }
+
+        70% {
+                box-shadow: 0 0 0 12px rgba(255, 255, 255, 0);
+        }
+
+        100% {
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+        }
+}
+
+.active-view {
+        animation: pulse 2s infinite;
+}
+
+.text-gradient {
+        background: linear-gradient(to right, #00b4d8, #ff758f);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+}
+
+/* Responsive layout */
+.grid {
+        display: grid;
+        gap: 12px;
+}
+
+@media (max-width: 1024px) {
+        .grid {
+                grid-template-columns: 1fr 1fr;
+        }
+
+        .container {
+                padding: 4rem;
+        }
+
+        .button {
+                padding: 4rem 2rem;
+        }
+}
+
+@media (max-width: 768px) {
+        .grid {
+                grid-template-columns: 1fr;
+        }
+
+        .container {
+                padding: 2rem;
+        }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+
+        .container,
+        .button::after,
+        .active-view {
+                animation: none;
+        }
+}

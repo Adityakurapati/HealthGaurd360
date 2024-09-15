@@ -1,0 +1,151 @@
+.doctor-search-container {
+        background-color: transparent;
+        color: white;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+        max-width: 1200px;
+        margin: 0 auto;
+        border-radius: 20px;
+    }
+    
+    h1 {
+        font-size: 2.5em;
+        margin-bottom: 20px;
+    }
+    
+    .search-bar {
+        display: flex;
+        margin-bottom: 20px;
+        background-color: #1e2740;
+        border-radius: 25px;
+        overflow: hidden;
+    }
+    
+    .search-bar input {
+        flex-grow: 1;
+        padding: 15px 20px;
+        font-size: 1em;
+        border: none;
+        background-color: transparent;
+        color: white;
+    }
+    
+    .search-bar button {
+        padding: 15px;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+    }
+    
+    .search-bar button img {
+        width: 25px;
+        height: 25px;
+        margin-right: 20px;
+    }
+    
+    .doctor-cards-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        overflow: hidden;
+    }
+    
+    .doctor-cards-wrapper {
+        width: 100%;
+        overflow: hidden;
+    }
+    
+    .doctor-cards {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+        gap: 20px;
+        width: fit-content; /* Adjust width based on the number of cards */
+    }
+    
+    .doctor-card {
+        background-color: #1e2740;
+        border-radius: 10px;
+        overflow: hidden;
+        width: 380px; /* Adjusted width */
+        min-width: 380px;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 20px;
+        position: relative;
+    }
+    
+    .doctor-card img {
+        width: 100%;
+        height: 315px;
+        object-fit: cover;
+        border-radius: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .doctor-info h3 {
+        margin: 0;
+        font-size: 1.5em;
+    }
+    
+    .doctor-info .specialization {
+        font-size: 1.2em;
+        color: #58b4ae;
+        margin-bottom: 10px;
+    }
+    
+    .doctor-info .location,
+    .doctor-info .contact {
+        font-size: 0.9em;
+        color: #cccccc;
+        margin: 5px 0;
+    }
+    
+    .nav-button {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 2em;
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1;
+    }
+    
+    .nav-button.left {
+        left: -20px;
+    }
+    
+    .nav-button.right {
+        right: -20px;
+    }
+    
+    .audio-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 20px auto;
+        padding: 10px 20px;
+        background-color: transparent;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 1em;
+    }
+    
+    .audio-button span {
+        margin-left: 10px;
+        font-size: 1.2em;
+        background-color: #ffffff;
+        color: #0b1121;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    

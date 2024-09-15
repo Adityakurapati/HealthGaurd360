@@ -1,0 +1,57 @@
+.news-updates {
+    text-align: center;
+    margin: 50px auto  ;
+    width: 100%;
+}
+h2{
+    margin-bottom: 70px;
+}
+.news-carousel {
+    display: flex;
+    align-items: center;
+    position: relative;
+    justify-content: space-between;
+}
+
+.carousel-container {
+    width: 100%;
+    overflow: hidden; /* Hide the outgoing cards */
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    /* width: calc(100% * 3);  */
+    width: 90%;
+}
+
+.news-item {
+    flex: 0 0 33.33%; /* Each card takes up 1/3 of the container */
+    margin: 0 20px;
+    background-color: #1f2230;
+    color: #ffffff;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.prev-button, .next-button {
+    background-color: transparent;
+    color: #ffffff;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s;
+}
+
+.prev-button:hover, .next-button:hover {
+    color: #21a1f1;
+}

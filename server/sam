@@ -1,0 +1,274 @@
+
+
+
+
+
+
+# import os
+# import firebase_admin
+# from firebase_admin import credentials, db
+# from flask import Flask, send_from_directory, jsonify, request
+# from flask_cors import CORS
+# import re
+# import logging
+# import dateparser
+
+# # Set up logging for debugging
+# logging.basicConfig(level=logging.DEBUG)
+
+# # Initialize Firebase
+# cred = credentials.Certificate('credentials/firebase-credentials.json')
+# firebase_admin.initialize_app(cred, {
+#     "databaseURL": "https://healthgaurd360-426f4-default-rtdb.asia-southeast1.firebasedatabase.app/"
+# })
+
+# app = Flask(__name__, static_folder="../client/build")
+# CORS(app)  # This enables CORS for all routes
+
+# # Reference the root of the database
+# ref = db.reference('/')
+
+# # Command handler with expanded operations
+# def handle_command(command):
+#     command = command.lower()
+
+#     if re.search(r'\b(add|appointment)\b', command) and not re.search(r'\b(show)\b', command):
+#         return add_appointment_command(command)
+#     elif re.search(r'\b(list|show)\b.*\b(hospitals)\b', command):
+#         match = re.search(r'\b(list|show)\b\s*(\d*)\b.*\b(hospitals)\b', command)
+#         count = match.group(2) if match.group(2) else "5"
+#         return show_nearby_hospitals_command(int(count))
+#     elif re.search(r'what disease starts with (\w)', command):
+#         match = re.search(r'what disease starts with (\w)', command)
+#         letter = match.group(1).upper()
+#         return show_disease_by_letter_command(letter)
+#     elif re.search(r'\b(my patients|show patients)\b', command):
+#         return show_my_patients_command(444)
+#     elif re.search(r'\b(available doctors|doctors)\b', command):
+#         return show_available_doctors_command()
+#     elif re.search(r'\b(show|my)\b.*\b(appointment)\b', command):
+#         match = re.search(r'patient (\w+)', command)
+#         if match:
+#                 patient_id = match.group(1)
+#                 return show_my_appointments_command(patient_id)
+#         else:
+#                 return "Please specify a patient ID. Example: 'show appointments for patient 456'"
+#     elif re.search(r'\b(heart rate|blood oxygen|sensor data)\b', command):
+#         return show_sensor_data_command()
+#     elif re.search(r'\b(news|health news)\b', command):
+#         return show_health_news_command()
+#     elif re.search(r'\b(user|patient) info\b', command):
+#         return show_user_info_command()
+#     elif re.search(r'\b(disease|condition) info\b', command):
+#         return show_disease_info_command(command)
+#     elif re.search(r'\b(hospital|clinic) info\b', command):
+#         return show_hospital_info_command()
+#     else:
+#         return "I'm sorry, I don't understand that command. Can you please rephrase or ask something else?"
+
+
+# def add_appointment_command(command):
+#             # Initialize default values
+#     doctor_id = "123"  # Placeholder, can be extracted from command
+#     patient_id = "456"  # Placeholder, can be extracted from command
+#     appointment_time = "10:00 AM"  # Default time if not provided
+
+#     # Extract date information from the command
+#     date_match = re.search(r'\bat\s*(.*)\b', command)
+#     if date_match:
+#         date_string = date_match.group(1)
+#         appointment_date = dateparser.parse(date_string)
+#     else:
+#         appointment_date = None
+
+#     # Handle unrecognized dates or ambiguous cases
+#     if not appointment_date:
+#         if "today" in command:
+#             appointment_date = dateparser.parse("today")
+#         elif "tomorrow" in command:
+#             appointment_date = dateparser.parse("tomorrow")
+#         elif "next week" in command:
+#             appointment_date = dateparser.parse("next week")
+#         else:
+#             # Return clearer error message if no date was understood
+#             return "Could not understand the date. Please specify a valid date like 'today,' 'tomorrow,' or an exact date."
+
+#     # Extract age, gender, and other information from the command
+#     age_match = re.search(r'\bage\s*(\d{1,2})\b', command)
+#     gender_match = re.search(r'\b(male|female|other)\b', command)
+
+#     # Parse extracted values
+#     age = age_match.group(1) if age_match else "Unknown"
+#     gender = gender_match.group(1) if gender_match else "Unknown"
+
+#     # Prepare appointment data with age, gender, and other fields
+#     appointment_data = {
+#         "doctor_id": doctor_id,
+#         "patient_id": patient_id,
+#         "date": appointment_date.strftime('%Y-%m-%d'),
+#         "time": appointment_time,
+#         "age": age,
+#         "gender": gender,
+#     }
+
+#     # Push the appointment data to Firebase
+#     appointments_ref = ref.child('appointments')
+#     new_appointment_ref = appointments_ref.push(appointment_data)
+
+#     # Return success message
+#     return f"Appointment added successfully for {appointment_date.strftime('%A, %Y-%m-%d')} with ID: {new_appointment_ref.key}. Age: {age}, Gender: {gender}"
+
+
+# def show_nearby_hospitals_command(limit=5):
+#     lat, lng = 18.5204, 73.8567  # Simulated coordinates
+    
+#     hospitals_ref = ref.child('hospitals')
+#     hospitals = hospitals_ref.order_by_child('lat').start_at(lat - 0.05).end_at(lat + 0.05).limit_to_first(limit).get()
+    
+#     if hospitals:
+#         return hospitals
+#     else:
+#         return "No nearby hospitals found."
+
+# def show_disease_by_letter_command(letter):
+#     diseases_ref = ref.child('diseases')
+#     diseases = diseases_ref.order_by_child('name').start_at(letter).end_at(letter + "\uf8ff").get()
+    
+#     if diseases:
+#         return diseases
+#     else:
+#         return f"No diseases found starting with {letter}."
+
+# def show_my_appointments_command(patient_id):
+#     appointments_ref = ref.child('appointments')
+#     appointments = appointments_ref.order_by_child('patient_id').equal_to(patient_id).get()
+
+#     if appointments:
+#         return appointments
+#     else:
+#         return f"No appointments found for Patient ID: {patient_id}"
+
+
+# def show_available_doctors_command():
+#     doctors_ref = ref.child('users')
+#     available_doctors = doctors_ref.order_by_child('role').equal_to('doctor').get()
+
+#     if available_doctors:
+#         return {k: v for k, v in available_doctors.items() if 'specialty' in v and v['specialty']}
+#     else:
+#                 return "No available doctors found."
+
+# import logging
+
+# def show_my_patients_command(doctor_id):
+#     logging.debug(f"Starting show_my_patients_command for Doctor ID: {doctor_id}")
+#     appointments_ref = ref.child('appointments')
+#     appointments = appointments_ref.order_by_child('doctor_id').equal_to(doctor_id).get()
+    
+#     if appointments:
+#         phrases = []
+#         for appointment_id, appointment_data in appointments.items():
+#             patient_id = appointment_data['patient_id']
+            
+#             # Fetch the patient details from the 'users' node
+#             user_ref = ref.child('users').child(patient_id)
+#             patient_data = user_ref.get()
+            
+#             if patient_data:
+#                 patient_name = patient_data.get('name', 'Unknown Name')
+#                 patient_gender = patient_data.get('gender', 'Unknown Gender')
+#                 patient_age = appointment_data.get('age', 'Unknown Age')
+#                 appointment_time = appointment_data.get('time', 'Unknown Time')
+#                 appointment_date = appointment_data.get('date', 'Unknown Date')
+                
+#                 # Constructing the phrase
+#                 phrase = (f"{len(phrases) + 1}st patient {patient_name} is {patient_gender} "
+#                           f"has booked an appointment at {appointment_time} on {appointment_date}, "
+#                           f"and their age is {patient_age}.")
+                
+#                 phrases.append(phrase)
+        
+#         logging.debug(f"Appointments and patient details found: {phrases}")
+#         return phrases
+#     else:
+#         logging.debug(f"No appointments found for Doctor ID: {doctor_id}")
+#         return f"No appointments found for Doctor ID: {doctor_id}"
+
+
+
+# def show_sensor_data_command():
+#     patient_id = "-O6Js3xVm1T3FoxFTjdZ"  # Simulated patient ID
+    
+#     sensor_data_ref = ref.child('sensor_data').child(patient_id)
+#     sensor_data = sensor_data_ref.get()
+
+#     if sensor_data:
+#         return sensor_data
+#     else:
+#         return "No sensor data found for the given Patient ID."
+
+# def show_health_news_command():
+#     news_ref = ref.child('news')
+#     news = news_ref.order_by_child('date').limit_to_last(5).get()
+    
+#     if news:
+#         return news
+#     else:
+#         return "No recent health news available."
+
+# def show_user_info_command():
+#     user_id = "-O6Js3xVm1T3FoxFTjdZ"  # Simulated user ID
+#     users_ref = ref.child('users')
+#     user_info = users_ref.child(user_id).get()
+    
+#     if user_info:
+#         if 'password' in user_info:
+#             del user_info['password']
+#         return user_info
+#     else:
+#         return "User information not found."
+
+# def show_disease_info_command(command):
+#     diseases_ref = ref.child('diseases')
+#     diseases = diseases_ref.get()
+    
+#     for disease_id, disease_info in diseases.items():
+#         if disease_info['name'].lower() in command:
+#             return disease_info
+    
+#     return "Disease information not found. Please specify a disease name."
+
+# def show_hospital_info_command():
+#     hospitals_ref = ref.child('hospitals')
+#     hospitals = hospitals_ref.get()
+    
+#     if hospitals:
+#         return hospitals
+#     else:
+#         return "No hospital information available."
+
+# @app.route("/api/bot", methods=["GET"])
+# def bot_api():
+#     command = request.args.get('command')
+    
+#     if not command:
+#         return jsonify({"message": "Command not provided"}), 400
+    
+#     response = handle_command(command)
+    
+#     if isinstance(response, dict) or isinstance(response, list):
+#         return jsonify(response)
+#     return jsonify({"message": response})
+
+# # Serve React client
+# @app.route("/", defaults={"path": ""})
+# @app.route("/<path:path>")
+# def serve(path):
+#     if path != "" and os.path.exists(app.static_folder + '/' + path):
+#         return send_from_directory(app.static_folder, path)
+#     else:
+#         return send_from_directory(app.static_folder, 'index.html')
+
+# # Start Flask app
+# if __name__ == "__main__":
+#     app.run(host='0.0.0.0', port=5000, debug=True)

@@ -1,0 +1,38 @@
+/* AppointmentsList.module.css */
+.appointmentsContainer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-top: 20px;
+}
+
+.appointmentCard {
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+}
+
+.appointmentDetails {
+        margin-bottom: 10px;
+}
+
+.statusButton {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+}
+
+.completed {
+        background-color: #4caf50;
+        color: white;
+}
+
+.uncompleted {
+        background-color: #f44336;
+        color: white;
+}

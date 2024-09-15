@@ -1,0 +1,47 @@
+body {
+        margin: 0;
+        font-family: 'Roboto', sans-serif;
+        background-color: black;
+        color: #ffffff;
+
+}
+
+.App {
+        text-align: left;
+}
+
+.content {
+        padding: 20px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+        color: #ffffff;
+}
+
+a {
+        color: #61dafb;
+        text-decoration: none;
+}
+
+a:hover {
+        color: #21a1f1;
+}
+
+button {
+        background-color: #21a1f1;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+}
+
+button:hover {
+        background-color: #1a81c1;
+}
