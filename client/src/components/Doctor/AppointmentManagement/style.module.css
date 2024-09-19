@@ -1,38 +1,173 @@
-/* AppointmentsList.module.css */
+/* General container */
 .appointmentsContainer {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-        margin-top: 20px;
-}
-
-.appointmentCard {
-        border: 1px solid #ddd;
-        padding: 15px;
+        background-color: #0b1e2d;
+        padding: 20px;
         border-radius: 10px;
-        background-color: #f9f9f9;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        max-width: 400px;
+        max-width: 900px;
+        margin: 0 auto;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
+/* Title styling */
+.title {
+        font-size: 24px;
+        color: #fff;
+        text-align: center;
+        margin-bottom: 20px;
+}
+
+/* Appointments list container */
+.appointmentsList {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+}
+
+/* Appointment card styling */
+.appointmentCard {
+        display: flex;
+        align-items: center;
+        background-color: #1b2b3a;
+        border-radius: 8px;
+        padding: 15px;
+        transition: transform 0.3s;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.appointmentCard:hover {
+        transform: scale(1.03);
+}
+
+/* Patient Icon */
+.patientIcon {
+        background-color: #31475c;
+        color: white;
+        padding: 15px;
+        border-radius: 50%;
+        margin-right: 20px;
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+}
+
+/* Patient name and location */
 .appointmentDetails {
-        margin-bottom: 10px;
+        flex: 1;
+        color: #c1d5e0;
 }
 
-.statusButton {
-        padding: 8px 12px;
+.patientName {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 5px;
+}
+
+.location {
+        background-color: #31475c;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        display: inline-block;
+}
+
+/* Action buttons */
+.actions {
+        display: flex;
+        gap: 10px;
+}
+
+.actionButton {
+        background-color: #2f3e4d;
+        color: #fff;
+        padding: 10px 20px;
         border: none;
         border-radius: 5px;
+        font-size: 14px;
         cursor: pointer;
+        transition: background-color 0.3s;
+}
+
+.viewMoreButton {
+        background-color: #212f3f;
+}
+
+.viewMoreButton:hover {
+        background-color: #31475c;
+}
+
+/* Status Button */
+.statusButton {
+        background-color: #31475c;
+        padding: 10px 15px;
+        border-radius: 5px;
+        color: white;
 }
 
 .completed {
-        background-color: #4caf50;
-        color: white;
+        background-color: #28a745;
 }
 
 .uncompleted {
-        background-color: #f44336;
-        color: white;
+        background-color: #ff5722;
+}
+
+.statusButton:hover {
+        opacity: 0.85;
+}
+
+@media (max-width: 768px) {
+        .appointmentCard {
+                flex-direction: column;
+                align-items: flex-start;
+        }
+
+        .actions {
+                justify-content: space-between;
+                width: 100%;
+        }
+}
+
+/* Modal Styles */
+.modalOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+}
+
+.modalContent {
+        background-color: #1b2b3a;
+        padding: 20px;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 600px;
+        position: relative;
+        color: #c1d5e0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.modalTitle {
+        font-size: 22px;
+        margin-bottom: 15px;
+}
+
+.closeButton {
+        background: none;
+        color: #ff5722;
+        border: none;
+        font-size: 24px;
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        cursor: pointer;
+}
+
+.closeButton:hover {
+        opacity: 0.8;
 }

@@ -9,7 +9,6 @@ import LoadingSpinner from './components/Loading'; // Import LoadingSpinner
 // Lazy load components
 const Login=React.lazy( () => import( './components/Auth/Login/Login' ) );
 const Patient=React.lazy( () => import( './components/Patient' ) );
-const PatientMessagingComponent=React.lazy( () => import( './components/Patient/Messaging' ) );
 const Doctor=React.lazy( () => import( './components/Doctor' ) );
 
 function App ()
@@ -66,14 +65,7 @@ function App ()
                                         <Route path="/" element={ currentUser? <Navigate to={ `/${ currentUser.role }-dashboard` } />:<Navigate to="/login" /> } />
                                         <Route path="/login" element={ <Login /> } />
                                         <Route path="/register" element={ <Register /> } />
-                                        <Route
-                                                path="/patient-dashboard"
-                                                element={ <Patient currentUser={ currentUser } doctors={ doctors } /> }
-                                        />
-                                        <Route
-                                                path="/patient-dashboard/messaging"
-                                                element={ <PatientMessagingComponent patientId={ currentUser.id } doctors={ doctors } /> }
-                                        />
+                                        <Route path="/patient-dashboard" element={ <Patient currentUser={ currentUser } doctors={ doctors } /> } />
                                         <Route path="/doctor-dashboard/*" element={ <Doctor currentUser={ currentUser } /> } />
                                         <Route path="/admin" element={ <Admin /> } />
                                 </Routes>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
-import styles from './register.module.css';  // Import CSS module
+import styles from './register.module.css';
 
 const Register=() =>
 {
@@ -19,18 +19,16 @@ const Register=() =>
         } );
         const [ hospitals, setHospitals ]=useState( [] );
 
-        // Fetch nearby hospitals based on some lat/lng
         useEffect( () =>
         {
                 const fetchHospitals=async () =>
                 {
                         try
                         {
-                                const lat=18.5204;  // Example latitude
-                                const lng=73.8567;  // Example longitude
-
+                                const lat=18.5204;
+                                const lng=73.8567;
                                 const response=await axios.get( `/api/nearby_hospitals?lat=${ lat }&lng=${ lng }` );
-                                setHospitals( response.data );  // Assuming hospital data comes as a list of objects
+                                setHospitals( response.data );
                         } catch ( error )
                         {
                                 console.error( 'Error fetching hospitals:', error );
@@ -67,166 +65,154 @@ const Register=() =>
         };
 
         return (
-                <motion.div
-                        className={ styles.registerContainer }
-                        initial={ { opacity: 0, y: 20 } }
-                        animate={ { opacity: 1, y: 0 } }
-                        transition={ { duration: 0.5 } }
-                >
+                <div className={ styles.registerContainer }>
                         <motion.h1
                                 className={ styles.heading }
-                                initial={ { opacity: 0, scale: 0.8 } }
-                                animate={ { opacity: 1, scale: 1 } }
-                                transition={ { duration: 0.5, type: 'spring', stiffness: 200 } }
+                                initial={ { opacity: 0, y: -20 } }
+                                animate={ { opacity: 1, y: 0 } }
+                                transition={ { duration: 0.5 } }
                         >
                                 Register as { role.charAt( 0 ).toUpperCase()+role.slice( 1 ) }
                         </motion.h1>
                         <form onSubmit={ handleSubmit } className={ styles.form }>
-                                <label className={ styles.label }>
-                                        Role:
-                                        <motion.select
-                                                name="role"
-                                                value={ role }
-                                                onChange={ ( e ) => setRole( e.target.value ) }
-                                                className={ styles.input }
-                                                whileTap={ { scale: 0.98 } }
-                                                transition={ { type: 'spring', stiffness: 200 } }
-                                        >
-                                                <option value="patient">Patient</option>
-                                                <option value="doctor">Doctor</option>
-                                        </motion.select>
-                                </label>
+                                <div className={ styles.formRow }>
+                                        <motion.div className={ styles.inputGroup } whileHover={ { scale: 1.02 } }>
+                                                <label htmlFor="role">Role:</label>
+                                                <select
+                                                        id="role"
+                                                        name="role"
+                                                        value={ role }
+                                                        onChange={ ( e ) => setRole( e.target.value ) }
+                                                        className={ styles.input }
+                                                >
+                                                        <option value="patient">Patient</option>
+                                                        <option value="doctor">Doctor</option>
+                                                </select>
+                                        </motion.div>
+                                        <motion.div className={ styles.inputGroup } whileHover={ { scale: 1.02 } }>
+                                                <label htmlFor="name">Name:</label>
+                                                <input
+                                                        type="text"
+                                                        id="name"
+                                                        name="name"
+                                                        value={ formData.name }
+                                                        onChange={ handleChange }
+                                                        className={ styles.input }
+                                                        required
+                                                />
+                                        </motion.div>
+                                </div>
 
-                                <label className={ styles.label }>
-                                        Name:
-                                        <motion.input
-                                                type="text"
-                                                name="name"
-                                                value={ formData.name }
-                                                onChange={ handleChange }
-                                                className={ styles.input }
-                                                required
-                                                whileFocus={ { scale: 1.02 } }
-                                                transition={ { type: 'spring', stiffness: 200 } }
-                                        />
-                                </label>
+                                <div className={ styles.formRow }>
+                                        <motion.div className={ styles.inputGroup } whileHover={ { scale: 1.02 } }>
+                                                <label htmlFor="email">Email:</label>
+                                                <input
+                                                        type="email"
+                                                        id="email"
+                                                        name="email"
+                                                        value={ formData.email }
+                                                        onChange={ handleChange }
+                                                        className={ styles.input }
+                                                        required
+                                                />
+                                        </motion.div>
+                                        <motion.div className={ styles.inputGroup } whileHover={ { scale: 1.02 } }>
+                                                <label htmlFor="password">Password:</label>
+                                                <input
+                                                        type="password"
+                                                        id="password"
+                                                        name="password"
+                                                        value={ formData.password }
+                                                        onChange={ handleChange }
+                                                        className={ styles.input }
+                                                        required
+                                                />
+                                        </motion.div>
+                                </div>
 
-                                <label className={ styles.label }>
-                                        Email:
-                                        <motion.input
-                                                type="email"
-                                                name="email"
-                                                value={ formData.email }
-                                                onChange={ handleChange }
-                                                className={ styles.input }
-                                                required
-                                                whileFocus={ { scale: 1.02 } }
-                                                transition={ { type: 'spring', stiffness: 200 } }
-                                        />
-                                </label>
-
-                                <label className={ styles.label }>
-                                        Password:
-                                        <motion.input
-                                                type="password"
-                                                name="password"
-                                                value={ formData.password }
-                                                onChange={ handleChange }
-                                                className={ styles.input }
-                                                required
-                                                whileFocus={ { scale: 1.02 } }
-                                                transition={ { type: 'spring', stiffness: 200 } }
-                                        />
-                                </label>
-
-                                <label className={ styles.label }>
-                                        Contact Number:
-                                        <motion.input
-                                                type="text"
-                                                name="contact_number"
-                                                value={ formData.contact_number }
-                                                onChange={ handleChange }
-                                                className={ styles.input }
-                                                required
-                                                whileFocus={ { scale: 1.02 } }
-                                                transition={ { type: 'spring', stiffness: 200 } }
-                                        />
-                                </label>
-
-                                <label className={ styles.label }>
-                                        Gender:
-                                        <motion.select
-                                                name="gender"
-                                                value={ formData.gender }
-                                                onChange={ handleChange }
-                                                className={ styles.input }
-                                                required
-                                                whileTap={ { scale: 0.98 } }
-                                                transition={ { type: 'spring', stiffness: 200 } }
-                                        >
-                                                <option value="male">Male</option>
-                                                <option value="female">Female</option>
-                                        </motion.select>
-                                </label>
+                                <div className={ styles.formRow }>
+                                        <motion.div className={ styles.inputGroup } whileHover={ { scale: 1.02 } }>
+                                                <label htmlFor="contact_number">Contact Number:</label>
+                                                <input
+                                                        type="text"
+                                                        id="contact_number"
+                                                        name="contact_number"
+                                                        value={ formData.contact_number }
+                                                        onChange={ handleChange }
+                                                        className={ styles.input }
+                                                        required
+                                                />
+                                        </motion.div>
+                                        <motion.div className={ styles.inputGroup } whileHover={ { scale: 1.02 } }>
+                                                <label htmlFor="gender">Gender:</label>
+                                                <select
+                                                        id="gender"
+                                                        name="gender"
+                                                        value={ formData.gender }
+                                                        onChange={ handleChange }
+                                                        className={ styles.input }
+                                                        required
+                                                >
+                                                        <option value="">Select Gender</option>
+                                                        <option value="male">Male</option>
+                                                        <option value="female">Female</option>
+                                                        <option value="other">Other</option>
+                                                </select>
+                                        </motion.div>
+                                </div>
 
                                 { role==='patient'&&(
-                                        <>
-                                                <label className={ styles.label }>
-                                                        Age:
-                                                        <motion.input
+                                        <div className={ styles.formRow }>
+                                                <motion.div className={ styles.inputGroup } whileHover={ { scale: 1.02 } }>
+                                                        <label htmlFor="age">Age:</label>
+                                                        <input
                                                                 type="number"
+                                                                id="age"
                                                                 name="age"
                                                                 value={ formData.age }
                                                                 onChange={ handleChange }
                                                                 className={ styles.input }
                                                                 required
-                                                                whileFocus={ { scale: 1.02 } }
-                                                                transition={ { type: 'spring', stiffness: 200 } }
                                                         />
-                                                </label>
-
-                                                <label className={ styles.label }>
-                                                        Location:
-                                                        <motion.input
+                                                </motion.div>
+                                                <motion.div className={ styles.inputGroup } whileHover={ { scale: 1.02 } }>
+                                                        <label htmlFor="location">Location:</label>
+                                                        <input
                                                                 type="text"
+                                                                id="location"
                                                                 name="location"
                                                                 value={ formData.location }
                                                                 onChange={ handleChange }
                                                                 className={ styles.input }
                                                                 required
-                                                                whileFocus={ { scale: 1.02 } }
-                                                                transition={ { type: 'spring', stiffness: 200 } }
                                                         />
-                                                </label>
-                                        </>
+                                                </motion.div>
+                                        </div>
                                 ) }
 
                                 { role==='doctor'&&(
-                                        <>
-                                                <label className={ styles.label }>
-                                                        Specialty:
-                                                        <motion.input
+                                        <div className={ styles.formRow }>
+                                                <motion.div className={ styles.inputGroup } whileHover={ { scale: 1.02 } }>
+                                                        <label htmlFor="specialty">Specialty:</label>
+                                                        <input
                                                                 type="text"
+                                                                id="specialty"
                                                                 name="specialty"
                                                                 value={ formData.specialty }
                                                                 onChange={ handleChange }
                                                                 className={ styles.input }
                                                                 required
-                                                                whileFocus={ { scale: 1.02 } }
-                                                                transition={ { type: 'spring', stiffness: 200 } }
                                                         />
-                                                </label>
-
-                                                <label className={ styles.label }>
-                                                        Hospital:
-                                                        <motion.select
+                                                </motion.div>
+                                                <motion.div className={ styles.inputGroup } whileHover={ { scale: 1.02 } }>
+                                                        <label htmlFor="hospital_id">Hospital:</label>
+                                                        <select
+                                                                id="hospital_id"
                                                                 name="hospital_id"
                                                                 value={ formData.hospital_id }
                                                                 onChange={ handleChange }
                                                                 className={ styles.input }
                                                                 required
-                                                                whileTap={ { scale: 0.98 } }
-                                                                transition={ { type: 'spring', stiffness: 200 } }
                                                         >
                                                                 <option value="">Select Hospital</option>
                                                                 { hospitals.map( ( hospital ) => (
@@ -234,21 +220,21 @@ const Register=() =>
                                                                                 { hospital.name }
                                                                         </option>
                                                                 ) ) }
-                                                        </motion.select>
-                                                </label>
-                                        </>
+                                                        </select>
+                                                </motion.div>
+                                        </div>
                                 ) }
 
                                 <motion.button
                                         type="submit"
                                         className={ styles.button }
                                         whileHover={ { scale: 1.05 } }
-                                        transition={ { type: 'spring', stiffness: 200 } }
+                                        whileTap={ { scale: 0.95 } }
                                 >
                                         Register
                                 </motion.button>
                         </form>
-                </motion.div>
+                </div>
         );
 };
 
