@@ -55,6 +55,10 @@ function MessagingComponent ( { doctorId } )
         };
 
         return (
+                <div>
+
+                
+                 
                 <motion.div
                         className={ styles.messagingComponent }
                         initial={ { opacity: 0, x: -100 } }
@@ -143,7 +147,9 @@ function MessagingComponent ( { doctorId } )
                                 </motion.div>
                         ) }
                 </motion.div>
+                </div>
         );
+
 }
 
 export default MessagingComponent;

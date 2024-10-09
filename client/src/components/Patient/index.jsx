@@ -10,7 +10,7 @@ const Home=( { currentUser, doctors } ) =>
         return (
                 <div className="content">
                         <AppointmentForm doctors={ doctors } />
-                        <DoctorSearch />
+                        <DoctorSearch doctors={ doctors }/>
                         <AlphabetSearch />
                         <NewsUpdates />
                         <HospitalFinder />

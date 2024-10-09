@@ -1,66 +1,82 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import Swiper from 'swiper/bundle';
+import 'swiper/swiper-bundle.css';
 import DoctorCard from './DoctorCard';
 import './DoctorSearch.css';
 
-const DoctorSearch=() =>
-{
-        const [ currentIndex, setCurrentIndex ]=useState( 0 );
+const DoctorSearch = ({ doctors }) => {
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filteredDoctors, setFilteredDoctors] = useState(doctors);
+    const swiperRef = useRef(null);
 
-        const doctors=[
-                { id: 1, name: 'Dr. Jane Doe', specialization: 'Cardiologist', image: '/img/Dt1.jpg' },
-                { id: 2, name: 'Dr. Ayune', specialization: 'Neurologist', image: 'path_to_male_doctor_image.jpg' },
-                { id: 3, name: 'Dr. Ayune', specialization: 'Neurologist', image: 'path_to_male_doctor_image.jpg' },
-                { id: 4, name: 'Dr. Ayune', specialization: 'Neurologist', image: 'path_to_male_doctor_image.jpg' },
-                // Add more doctors as needed
-        ];
+    useEffect(() => {
+        const swiper = new Swiper('.swiper-container', {
+            slidesPerView: 3, // Show 3 cards per page
+            spaceBetween: 20,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            loop: true,
+        });
+        swiperRef.current = swiper;
+    }, []);
 
-        const handleNext=() =>
-        {
-                if ( currentIndex<doctors.length-1 )
-                {
-                        setCurrentIndex( currentIndex+1 );
-                }
-        };
-
-        const handlePrev=() =>
-        {
-                if ( currentIndex>0 )
-                {
-                        setCurrentIndex( currentIndex-1 );
-                }
-        };
-
-        return (
-                <div className="doctor-search-container">
-                        <h1>Want To Search A Doctor?</h1>
-                        <div className="search-bar">
-                                <input
-                                        type="text"
-                                        placeholder="For What Do You Want To Search"
-                                />
-                                <button type="submit">
-                                        <img src="/img/search.jpg" alt="Search" />
-                                </button>
-                        </div>
-                        <div className="doctor-cards-container">
-                                <button className="nav-button left" onClick={ handlePrev }>{ '<' }</button>
-                                <div className="doctor-cards-wrapper">
-                                        <div
-                                                className="doctor-cards"
-                                                style={ { transform: `translateX(-${ currentIndex*100 }%)` } }
-                                        >
-                                                { doctors.map( doctor => (
-                                                        <DoctorCard key={ doctor.id } { ...doctor } />
-                                                ) ) }
-                                        </div>
-                                </div>
-                                <button className="nav-button right" onClick={ handleNext }>{ '>' }</button>
-                        </div>
-                        <button className="audio-button">
-                                Hear What Our Doctor Says <span>▶</span>
-                        </button>
-                </div>
+    useEffect(() => {
+        const filtered = doctors.filter(doctor =>
+            doctor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            doctor.specialty.toLowerCase().includes(searchTerm.toLowerCase())
         );
+        setFilteredDoctors(filtered);
+    }, [searchTerm, doctors]);
+
+    useEffect(() => {
+        if (filteredDoctors.length === 1 && swiperRef.current) {
+            // Find the index of the single filtered doctor
+            const index = doctors.findIndex(doctor => doctor.id === filteredDoctors[0].id);
+            swiperRef.current.slideToLoop(index, 0, false); // Slide to the single card
+        }
+    }, [filteredDoctors]);
+
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
+    return (
+        <div className="doctor-search-container">
+            <h1>Want To Search A Doctor?</h1>
+            <div className="search-bar">
+                <input
+                    type="text"
+                    placeholder="Search by doctor name or specialty"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                />
+                <button type="submit">
+                    <img src="/img/search.jpg" alt="Search" />
+                </button>
+            </div>
+            <div className="swiper-container">
+                <div className="swiper-wrapper">
+                    {filteredDoctors.map(doctor => (
+                        <div className="swiper-slide" key={doctor.id}>
+                            <DoctorCard
+                                name={doctor.name}
+                                specialization={doctor.specialty}
+                                gender={doctor.gender}
+                                contact_number={doctor.contact_number}
+                            />
+                        </div>
+                    ))}
+                </div>
+                <div className="swiper-button-prev"></div>
+                <div className="swiper-button-next"></div>
+            </div>
+            <button className="audio-button">
+                Hear What Our Doctor Says <span>▶</span>
+            </button>
+        </div>
+    );
 };
 
 export default DoctorSearch;

@@ -7,7 +7,7 @@ body {
 }
     .appointment-form {
         display: flex;
-        height: 500px;
+        height: fit-content;
         border-radius: 16px;
         overflow: hidden;
         max-width: 1000px;
@@ -96,8 +96,17 @@ body {
     
     .button-group button:first-child {
         margin-right: 15px;
+    margin-top: 0;
+    background-color: #0d1c39;
+    color: white;
+    width: fit-content;
     }
+    .form-group #doctor_id{
+        padding: 0.7rem;
+        border-radius: .3rem;
+        margin: 0.6rem auto;
     
+    }
     .button-group button:hover {
         background: #28447d;
     }
@@ -111,11 +120,11 @@ body {
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 30px 0px 0px 40px;
+        padding: 0 0px 0px 40px;
     }
     
     .image-container img {
         box-shadow: 4px 4px 20px black;
         max-width: 100%;
-        height: auto;
+        height: 100%;
     }

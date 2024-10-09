@@ -27,6 +27,7 @@
         gap: 100px;
         justify-content: center;
         z-index: 2;
+        margin-left: -82rem;
 }
 
 /* Login option buttons */
@@ -167,8 +168,12 @@
 
 .leftPanel {
         background-color: #1e293b;
-        left: 0;
-        z-index: 2
+    left: 0;
+    z-index: 2;
+    /* height: 100vh; */
+    width: 40rem;
+    padding: 0;
+    margin: 0;
 }
 
 .rightPanel {
@@ -208,13 +213,14 @@
 }
 
 .inputGroup input {
-        width: 100%;
+        width: 91%;
         padding: 10px;
         background-color: #334155;
         border: 1px solid #4b5563;
         border-radius: 5px;
         color: white;
         font-size: 1rem;
+        margin-left: 10px;
 }
 
 /* Forgot password link */
@@ -225,21 +231,28 @@
 
 .forgotPassword a {
         color: #22d3ee;
-        text-decoration: none;
-        font-size: 0.9rem;
+    font-size: 0.9rem;
+    position: absolute;
+    left: 30rem;
+    bottom: 13rem;
+    text-decoration: none;
 }
 
 /* Submit button */
 .submitButton {
-        width: 100%;
-        padding: 12px;
         background-color: #2563eb;
-        color: white;
         border: none;
         border-radius: 5px;
-        font-size: 1rem;
+        color: #fff;
         cursor: pointer;
-        transition: background-color 0.3s;
+        font-size: 1rem;
+        padding: 12px;
+        transition: background-color .3s;
+        width: 56%;
+        margin: auto;
+        position: absolute;
+        top: 20rem;
+        left: 9rem;
 }
 
 .submitButton:hover {
@@ -248,16 +261,17 @@
 
 /* Toggle button for switching between login modes */
 .toggleButton {
-        margin-top: 20px;
-        padding: 10px 20px;
         background-color: #22d3ee;
-        color: #0f172a;
         border: none;
         border-radius: 5px;
-        font-size: 1rem;
+        color: #0f172a;
         cursor: pointer;
-        transition: background-color 0.3s;
-}
+        font-size: 1rem;
+        margin-top: 50px;
+        padding: 9px 20px;
+        margin-left: 155px;
+        transition: background-color .3s;
+    }
 
 .toggleButton:hover {
         background-color: #06b6d4;
@@ -267,11 +281,21 @@
 .welcomeText {
         color: #e2e8f0;
         font-size: 2.5rem;
-        text-align: center;
         margin-bottom: 20px;
+        text-align: center;
+        margin-left: 185px;
+        margin-top: 0;
 }
 
 .welcomeEmoji {
         font-size: 4rem;
         margin-bottom: 20px;
 }
+.welcomeImage {
+        height: auto;
+        object-fit: contain;
+        width: 20rem;
+        position: relative;
+        top: -55px;
+        left: 55px;/* Or use cover, depending on your layout */
+      }

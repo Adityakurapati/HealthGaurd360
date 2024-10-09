@@ -147,20 +147,20 @@ def add_patient():
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
-# Route to get all patients
 @app.route('/api/patients', methods=['GET'])
 def get_patients():
     try:
-        patients_ref = ref.child('users').child('patients')  # Reference the 'patients' node
-        patients = patients_ref.get()  # Get all patient data
+        # Reference the 'patients' node in the Firebase Realtime Database
+        patients_ref = ref.child('users').child('patients')
+        patients = patients_ref.get()  # Fetch all patients
 
         patients_list = []
         if patients:
             for patient_id, patient_data in patients.items():
-                patient_data['id'] = patient_id  # Add patient ID to the data
+                patient_data['id'] = patient_id  # Add node key as 'id'
                 patients_list.append(patient_data)
 
-        return jsonify(patients_list)  # Return patient list as JSON
+        return jsonify(patients_list)  # Return the list of patients with IDs
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -363,7 +363,8 @@ def get_current_user():
         if user_data:
             user_data['id'] = user_id  # Include the user ID in the response
             user_data['role'] = role
-            print(f"Fetched user data: {user_data}")
+            print(f"======== Fetched user data: =============s{user_data}")
+            
             return jsonify(user_data), 200
         else:
             return jsonify({"error": "User not found"}), 404
@@ -384,54 +385,6 @@ def logout():
 
 
 
-@app.route('/api/messages/send', methods=['POST'])
-def send_message():
-    try:
-        # Get message data from request
-        message_data = request.json
-        sender_id = message_data['sender_id']
-        receiver_id = message_data['receiver_id']
-        message_text = message_data['message_text']
-        sender_role = message_data['sender_role']  # Either 'doctor' or 'patient'
-
-        # Create the conversation_id using sorted doctor_id and patient_id
-        conversation_id = f"{min(sender_id, receiver_id)}_{max(sender_id, receiver_id)}"
-        conversation_path = f'messages/{conversation_id}'
-
-        # Check if conversation exists, otherwise create it
-        conversation_ref = ref.child(conversation_path)
-        conversation = conversation_ref.get()
-
-        if not conversation:
-            # Initialize the conversation node if not present
-            conversation_ref.set({
-                'doctor_id': sender_id if sender_role == 'doctor' else receiver_id,
-                'patient_id': sender_id if sender_role == 'patient' else receiver_id,
-                'messages': {}
-            })
-
-        # Retrieve the existing messages object
-        existing_messages = conversation_ref.child('messages').get() or {}
-
-        # Create a unique key for each message based on timestamp
-        message_key = str(int(time.time() * 1000))  # Use timestamp in milliseconds as key
-        new_message = {
-            'sender_role': sender_role,
-            'message_text': message_text,
-            'timestamp': int(time.time() * 1000)  # Timestamp in milliseconds
-        }
-
-        # Update the messages object with the new message
-        existing_messages[message_key] = new_message
-
-        # Update the conversation's messages field
-        conversation_ref.child('messages').update(existing_messages)
-
-        return jsonify({"success": True}), 201
-    except Exception as e:
-        logging.error(f"Error sending message: {str(e)}")
-        return jsonify({"error": str(e)}), 500
-
 @app.route('/api/messages', methods=['GET'])
 def get_messages():
     try:
@@ -443,67 +396,70 @@ def get_messages():
         conversation_path = f'messages/{conversation_id}'
 
         # Fetch the conversation
-        conversation_ref = ref.child(conversation_path)
+        conversation_ref = db.reference(conversation_path)
         conversation = conversation_ref.get()
 
-        if conversation:
-            # Return messages sorted by timestamp
-            messages = conversation.get('messages', {})
-            sorted_messages = sorted(messages.values(), key=lambda x: x['timestamp'])
+        if conversation and 'messages' in conversation:
+            # Convert messages dict to a list and sort by timestamp
+            messages_list = [
+                {**msg, 'id': msg_id}
+                for msg_id, msg in conversation['messages'].items()
+            ]
+            sorted_messages = sorted(messages_list, key=lambda x: x['timestamp'])
             return jsonify(sorted_messages), 200
         else:
             return jsonify([]), 200
     except Exception as e:
-        logging.error(f"Error fetching messages: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
-
-@app.route('/messages/<patient_id>_<doctor_id>/messages', methods=['GET'])
-def get_patient_messages(patient_id, doctor_id):
+@app.route('/api/messages/send', methods=['POST'])
+def send_message():
     try:
-        # Reference to the Firebase messages node
-        ref = db.reference(f'messages/{patient_id}_{doctor_id}/messages')
-        messages = ref.get()
+        data = request.json
+        sender_id = data.get('sender_id')
+        receiver_id = data.get('receiver_id')
+        message_text = data.get('message_text')
+        sender_role = data.get('sender_role')
 
-        if messages:
-            return jsonify(messages), 200
-        else:
-            return jsonify({}), 200  # Return an empty object if no messages
+        if not all([sender_id, receiver_id, message_text, sender_role]):
+            return jsonify({"error": "Missing required fields"}), 400
+
+        # Create the conversation_id using sorted sender_id and receiver_id
+        conversation_id = f"{min(sender_id, receiver_id)}_{max(sender_id, receiver_id)}"
+        conversation_path = f'messages/{conversation_id}'
+
+        # Reference to the conversation node
+        conversation_ref = db.reference(conversation_path)
+
+        # Create a new message
+        new_message = {
+            'timestamp': int(time.time() * 1000),  # Current time in milliseconds
+            'sender_id': sender_id,
+            'message_text': message_text,
+            'sender_role': sender_role
+        }
+
+        # Add the new message to the 'messages' subcollection
+        new_message_ref = conversation_ref.child('messages').push(new_message)
+
+        # Update the doctor_id and patient_id fields if they don't exist
+        conversation_ref.update({
+            'doctor_id': sender_id if sender_role == 'doctor' else receiver_id,
+            'patient_id': sender_id if sender_role == 'patient' else receiver_id
+        })
+
+        return jsonify({"message": "Message sent successfully", "message_id": new_message_ref.key}), 201
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return jsonify({"error": str(e)}), 500
 
-@app.route('/messages/<patient_id>_<doctor_id>/messages', methods=['GET', 'POST'])
-def handle_messages(patient_id, doctor_id):
-    if request.method == 'GET':
-        try:
-            # Reference to the Firebase messages node
-            ref = db.reference(f'messages/{patient_id}_{doctor_id}/messages')
-            messages = ref.get()
-
-            if messages:
-                return jsonify(messages), 200
-            else:
-                return jsonify({}), 200  # Return an empty object if no messages
-        except Exception as e:
-            return jsonify({'error': str(e)}), 500
-    
-    elif request.method == 'POST':
-        try:
-            # Reference to the Firebase messages node
-            ref = db.reference(f'messages/{patient_id}_{doctor_id}/messages')
-
-            # Get the new message from the request body
-            new_message = request.json
-            new_message_id = ref.push().key  # Generate a new key for the message
-
-            # Add the new message to Firebase
-            ref.child(new_message_id).set(new_message)
-
-            return jsonify({'message': 'Message added successfully'}), 201
-        except Exception as e:
-            return jsonify({'error': str(e)}), 500
-
-
+# Route to get the next appointment with formatted time and buzzer flag
+@app.route('/appointment', methods=['GET'])
+def get_next_appointment():
+    try:
+        # Sample response with formattedTime and buzzerFlag
+        return jsonify({"formattedTime": "1 hr 3 min", "buzzerFlag": "off"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)

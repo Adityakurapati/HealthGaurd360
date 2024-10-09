@@ -1,0 +1,63 @@
+{
+    "A": [
+      {
+        "name": "Alzheimer's Disease",
+        "description": "A progressive neurodegenerative disease that causes memory loss, confusion, and changes in thinking patterns.",
+        "cause": "Primarily genetic factors, with other environmental factors potentially contributing.",
+        "precaution": "Regular mental stimulation, healthy diet, and physical activity may help delay onset."
+      },
+      {
+        "name": "ALS (Amyotrophic Lateral Sclerosis)",
+        "description": "A progressive neurological disease that affects nerve cells in the brain and the spinal cord.",
+        "cause": "Mostly unknown, but some genetic factors are involved.",
+        "precaution": "There is no cure; however, therapy and medications can slow progression."
+      },
+      {
+        "name": "Anemia",
+        "description": "A condition in which there is a deficiency of red cells or of hemoglobin in the blood.",
+        "cause": "Caused by lack of iron, chronic diseases, or inherited disorders.",
+        "precaution": "Iron supplements and dietary changes can help manage anemia."
+      }
+    ],
+    "B": [
+      {
+        "name": "Brain Tumor",
+        "description": "An abnormal mass of tissue in the brain that can disrupt normal brain functions.",
+        "cause": "Causes may be genetic mutations or exposure to radiation.",
+        "precaution": "Early diagnosis, radiation therapy, and surgery can help manage symptoms."
+      },
+      {
+        "name": "Bipolar Disorder",
+        "description": "A mental health condition causing extreme mood swings including emotional highs (mania) and lows (depression).",
+        "cause": "Genetic, environmental, and biological factors.",
+        "precaution": "Mood stabilizers, therapy, and lifestyle management can help control the condition."
+      },
+      {
+        "name": "Bronchitis",
+        "description": "Inflammation of the lining of bronchial tubes, which carry air to and from the lungs.",
+        "cause": "Caused by viruses, bacteria, or irritants like tobacco smoke.",
+        "precaution": "Avoid smoking, rest, and medication can help manage symptoms."
+      }
+    ],
+    "C": [
+      {
+        "name": "Cerebral Palsy",
+        "description": "A group of disorders affecting movement and muscle tone, caused by damage to the brain before or at birth.",
+        "cause": "Brain injury or abnormal development during pregnancy or early life.",
+        "precaution": "Physical therapy and medication can help manage symptoms."
+      },
+      {
+        "name": "Chronic Fatigue Syndrome",
+        "description": "A complex disorder characterized by extreme fatigue that can't be explained by any underlying medical condition.",
+        "cause": "Exact cause is unknown, but viral infections and psychological stress are believed to play a role.",
+        "precaution": "Graded exercise therapy and cognitive behavioral therapy may help alleviate symptoms."
+      },
+      {
+        "name": "Cystic Fibrosis",
+        "description": "A hereditary disorder affecting the exocrine glands, leading to the production of thick mucus that blocks airways.",
+        "cause": "Caused by a mutation in the CFTR gene.",
+        "precaution": "Regular chest physiotherapy, medication, and proper nutrition help manage the condition."
+      }
+    ]
+  }
+  

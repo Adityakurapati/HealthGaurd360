@@ -28,7 +28,7 @@ h2{
 .news-item {
     flex: 0 0 33.33%; /* Each card takes up 1/3 of the container */
     margin: 0 20px;
-    background-color: #1f2230;
+    background-color: #4bbfd9;
     color: #ffffff;
     height: 300px;
     display: flex;

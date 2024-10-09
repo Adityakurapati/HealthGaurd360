@@ -27,8 +27,9 @@ app = Flask(__name__)
 CORS(app)  # This enables CORS for all routes
 
 # Global variables to store IDs
-global_patient_id = os.getenv('PATIENT_ID')
-global_doctor_id = os.getenv('DOCTOR_ID')
+# Global variables to store IDs
+global_patient_id = "-O7dVDeL9uJpmvgknDaO"
+global_doctor_id = "-O7dUwf9UY1b6agngcho"
 
 # Vonage setup
 VONAGE_API_KEY = 'e0e01efd'

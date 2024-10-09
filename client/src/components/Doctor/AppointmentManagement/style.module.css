@@ -152,11 +152,24 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
+/* Appointment details inside the modal */
+.modalDetails {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 20px;
+}
+
+.modalDetails p {
+        margin: 0;
+}
+
 .modalTitle {
         font-size: 22px;
         margin-bottom: 15px;
 }
 
+/* Close button styling */
 .closeButton {
         background: none;
         color: #ff5722;
@@ -170,4 +183,10 @@
 
 .closeButton:hover {
         opacity: 0.8;
+}
+
+@media (max-width: 600px) {
+        .modalDetails {
+                grid-template-columns: 1fr;
+        }
 }

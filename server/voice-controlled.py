@@ -1,8 +1,5 @@
-import os
 import firebase_admin
 from firebase_admin import credentials, db
-from flask import Flask, jsonify, request
-from flask_cors import CORS
 import re
 import logging
 import dateparser
@@ -10,13 +7,13 @@ import pyttsx3
 from threading import Thread
 import speech_recognition as sr
 import json
-from dotenv import load_env
+from dotenv import load_dotenv
+import os
 
-load_env()
+load_dotenv()
 
 # Set up logging for debugging
 logging.basicConfig(level=logging.DEBUG)
-
 
 # Initialize Firebase
 cred = credentials.Certificate('credentials/firebase-credentials.json')
@@ -24,15 +21,12 @@ firebase_admin.initialize_app(cred, {
     "databaseURL": "https://healthgaurd360-426f4-default-rtdb.asia-southeast1.firebasedatabase.app/"
 })
 
-app = Flask(__name__, static_folder="../client/build")
-CORS(app)  # This enables CORS for all routes
-
 # Reference the root of the database
 ref = db.reference('/')
 
 # Global variables to store IDs
-global_patient_id = os.getenv('PATIENT_ID')
-global_doctor_id = os.getenv('DOCTOR_ID')
+global_patient_id = "-O7dVDeL9uJpmvgknDaO"
+global_doctor_id = "-O7dUwf9UY1b6agngcho"
 
 # Initialize text-to-speech engine
 tts_engine = pyttsx3.init()
@@ -71,25 +65,6 @@ def handle_command(command):
         return show_hospital_info_command()
     else:
         return "I'm sorry, I don't understand that command. Can you please rephrase or ask something else?"
-
-@app.route("/api/store_ids", methods=["GET"])
-def store_ids():
-    global global_patient_id, global_doctor_id
-
-    patient_id = request.args.get('patient_id')
-    doctor_id = request.args.get('doctor_id')
-
-    # Check if at least one ID is provided
-    if not patient_id and not doctor_id:
-        return jsonify({"message": "At least one of patient ID or doctor ID must be provided"}), 400
-
-    # Update the global variables only if they are provided
-    if patient_id:
-        global_patient_id = patient_id
-    if doctor_id:
-        global_doctor_id = doctor_id
-
-    return jsonify({"message": "IDs stored successfully", "stored_ids": {"patient_id": global_patient_id, "doctor_id": global_doctor_id}}), 200
 
 def add_appointment_command(command):
     # Extract information from the command
@@ -231,19 +206,21 @@ def show_sensor_data_command():
         latest_data = list(sensor_data.values())[0]
         heart_rate = latest_data.get('heart_rate', 'Unknown')
         blood_oxygen = latest_data.get('blood_oxygen', 'Unknown')
-        return f"Latest sensor data: Heart Rate: {heart_rate}, Blood Oxygen: {blood_oxygen}."
+        return f"Your latest heart rate is {heart_rate} bpm, and blood oxygen level is {blood_oxygen}%."
     else:
-        return "No sensor data available."
+        return "No sensor data found."
 
 def show_health_news_command():
     logging.debug("Fetching health news")
-    # Assuming health news is stored in Firebase under 'news'
-    news_ref = ref.child('news')
-    news = news_ref.order_by_key().limit_to_last(1).get()
+    # Assuming health news is stored in Firebase under 'health_news'
+    news_ref = ref.child('health_news')
+    latest_news = news_ref.order_by_key().limit_to_last(1).get()
     
-    if news:
-        latest_news = list(news.values())[0]
-        return f"Latest health news: {latest_news.get('headline', 'No headline available')}"
+    if latest_news:
+        news_data = list(latest_news.values())[0]
+        headline = news_data.get('headline', 'Unknown Headline')
+        details = news_data.get('details', 'No details available')
+        return f"Latest health news: {headline}. Details: {details}"
     else:
         return "No health news available."
 
@@ -283,46 +260,28 @@ def show_hospital_info_command():
         return f"Hospital Info: Name: {hospital_data.get('name', 'Unknown')}, Address: {hospital_data.get('address', 'No address available')}."
     else:
         return "No hospital information available."
+# Function for voice-based command input
+def listen_for_command():
+    with sr.Microphone() as source:
+        print("Listening for a command...")
+        recognizer.adjust_for_ambient_noise(source)
+        audio = recognizer.listen(source)
 
-@app.route("/api/bot", methods=["POST"])
-def bot():
-    data = request.get_json()
-    command = data.get('command', '')
-    response = handle_command(command)
-    
-    # Speak the response
-    tts_engine.say(response)
-    tts_engine.runAndWait()
-    
-    return jsonify({"response": response}), 200
+        try:
+            command = recognizer.recognize_google(audio)
+            print(f"You said: {command}")
+            response = handle_command(command)
+            tts_engine.say(response)
+            tts_engine.runAndWait()
+        except sr.UnknownValueError:
+            print("Could not understand the command.")
+        except sr.RequestError as e:
+            print(f"Error with speech recognition service: {e}")
 
-@app.route('/api/speak', methods=['POST'])
-def speak():
-    data = request.get_json()
-    text = data.get('text', '')
-    tts_engine.say(text)
-    tts_engine.runAndWait()
-    return jsonify({"status": "success"}), 200
+# Run speech recognition in a separate thread
+def start_voice_assistant():
+    print("Starting voice assistant...")
+    Thread(target=listen_for_command).start()
 
-def listen_for_commands():
-    while True:
-        with sr.Microphone() as source:
-            print("Listening for commands...")
-            audio = recognizer.listen(source)
-            try:
-                command = recognizer.recognize_google(audio)
-                print(f"Command received: {command}")
-                response = handle_command(command)
-                print(f"Response: {response}")
-                # Optionally, send the response to a text-to-speech endpoint or handle it as needed
-                tts_engine.say(response)
-                tts_engine.runAndWait()
-            except sr.UnknownValueError:
-                print("Sorry, I did not understand that.")
-            except sr.RequestError as e:
-                print(f"Could not request results; {e}")
-
-if __name__ == "__main__":
-    # Start the speech recognition in a separate thread
-    Thread(target=listen_for_commands, daemon=True).start()
-    app.run(port=5000)
+if _name_ == "_main_":
+    start_voice_assistant()

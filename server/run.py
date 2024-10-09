@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 # Initialize Firebase
-cred = credentials.Certificate('credentials/firebase-credentials.json')
+cred = credentials.Certificate('./credentials/firebase-credentials.json')
 firebase_admin.initialize_app(cred, {
     "databaseURL": "https://healthgaurd360-426f4-default-rtdb.asia-southeast1.firebasedatabase.app/"
 })

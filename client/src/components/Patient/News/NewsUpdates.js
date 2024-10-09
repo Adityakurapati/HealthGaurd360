@@ -8,7 +8,10 @@ const NewsUpdates = () => {
     useEffect(() => {
         fetch('/api/news')
             .then(response => response.json())
-            .then(data => setNewsItems(data))
+            .then(data => {
+                const newsArray = Object.values(data); // Assuming Firebase response is an object
+                setNewsItems(newsArray);
+            })
             .catch(error => console.error('Error fetching news:', error));
     }, []);
 
@@ -26,7 +29,7 @@ const NewsUpdates = () => {
 
     return (
         <section className="news-updates">
-            <h2 >Latest News And Updates</h2>
+            <h2>Latest News And Updates</h2>
             <div className="news-carousel">
                 <button className="prev-button" onClick={handlePrev}>{'<'}</button>
                 <div className="carousel-container">

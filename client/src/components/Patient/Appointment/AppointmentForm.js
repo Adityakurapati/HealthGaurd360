@@ -191,6 +191,9 @@ function AppointmentForm ( { doctors } )
                                 <img src="/img/front.jpg" alt="Medical Illustration" />
                         </div>
                         <Modal isOpen={ isModalOpen } onClose={ closeModal } message={ modalMessage } />
+                        
+                        <script src="https://cdn.botpress.cloud/webchat/v2/inject.js"></script>
+                        <script src="https://mediafiles.botpress.cloud/37dc6043-18cd-49ec-9088-37150adec087/webchat/v2/config.js"></script>
                 </div>
         );
 }

@@ -35,8 +35,9 @@ const Login=() =>
                         const data=await response.json();
                         if ( response.ok )
                         {
+                                console.log("Login successful, navigating to:", role === 'doctor' ? '/doctor-dashboard' : '/patient-dashboard');
                                 // Navigate to dashboard based on role
-                                navigate( role==='doctor'? '/doctor_dashboard':'/patient_dashboard' );
+                                navigate( role==='doctor'? '/doctor-dashboard':'/patient-dashboard' );
                         } else
                         {
                                 setErrorMessage( data.error||'Login failed. Please try again.' );
@@ -145,7 +146,12 @@ const Login=() =>
                                                         <button onClick={ goBack } className={ styles.backButton }>Back to Options</button>
                                                 </div>
                                                 <div className={ `${ styles.panel } ${ styles.rightPanel }` }>
-                                                        <div className={ styles.welcomeEmoji }>👋</div>
+                                                        {/* <div className={ styles.welcomeEmoji }>👋</div> */}
+                                                        <img
+                                                                src={isPatientMode ? '/img/patient.png' : '/img/pngegg.png'}
+                                                                 alt={isPatientMode ? 'Patient' : 'Doctor'}
+                                                                className={styles.welcomeImage}
+                                                                 />
                                                         <h2 className={ styles.welcomeText }>Welcome, { isPatientMode? 'Patient':'Doctor' }!</h2>
                                                 </div>
                                         </div>
