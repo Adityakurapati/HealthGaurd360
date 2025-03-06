@@ -1,0 +1,42 @@
+Based on the code you provided, here are all the supported voice commands that your HealthGuard360 system can recognize and process:
+
+1. **Add Appointment Commands**
+   - "Add appointment at [date/time]"
+   - Example: "Add appointment at next Monday"
+   - Can include age: "Add appointment at tomorrow age 45"
+   - Can include gender: "Add appointment at Friday male"
+
+2. **Hospital Information Commands**
+   - "List hospitals" (shows default 5 hospitals)
+   - "Show 3 hospitals" (specify number)
+   - "Hospital info" (shows information about a specific hospital)
+
+3. **Disease Information Commands**
+   - "What disease starts with A" (replace A with any letter)
+   - "Disease info" (shows general disease information)
+   - "Condition info" (alternative phrasing)
+
+4. **Doctor Commands**
+   - "Show my patients" (for doctor's interface)
+   - "My patients" (alternative phrasing)
+   - "Available doctors" (lists doctors who are available)
+   - "Show doctors" (alternative phrasing)
+
+5. **Appointment Viewing Commands**
+   - "Show my appointments" (for patient's interface)
+   - "My appointments" (alternative phrasing)
+
+6. **Health Data Commands**
+   - "Heart rate" (shows latest heart rate data)
+   - "Blood oxygen" (shows latest blood oxygen data)
+   - "Sensor data" (shows all sensor data)
+
+7. **News Commands**
+   - "Health news" (provides latest health news)
+   - "News" (alternative phrasing)
+
+8. **User Information Commands**
+   - "User info" (displays user information)
+   - "Patient info" (alternative phrasing)
+
+The system uses regular expressions to match these command patterns, so there's some flexibility in how you phrase them. The code is designed to extract key information (like dates, ages, and genders) from natural language commands.

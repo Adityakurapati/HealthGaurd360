@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthGuard360 Voice Assistant</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 4px solid #3498db;
+        }
+        .voice-controls {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .mic-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            font-size: 24px;
+            cursor: pointer;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .mic-button:hover {
+            background-color: #2980b9;
+        }
+        .mic-button:active, .mic-button.listening {
+            background-color: #e74c3c;
+            transform: scale(1.1);
+        }
+        .response-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            min-height: 100px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .status {
+            font-style: italic;
+            color: #7f8c8d;
+            margin: 10px 0;
+        }
+        .command-examples {
+            background-color: #eaf2f8;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .command-examples h3 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+        .command-examples ul {
+            padding-left: 20px;
+        }
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            .mic-button {
+                width: 60px;
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>HealthGuard360</h1>
+        <p>Voice Command Interface</p>
+    </header>
+    
+    <div class="container">
+        <div class="voice-controls">
+            <h2>Speak your command</h2>
+            <p class="status" id="status">Click the microphone to start</p>
+            <button id="micButton" class="mic-button">
+                <i>🎤</i>
+            </button>
+            <p id="transcription"></p>
+        </div>
+        
+        <div class="response-container">
+            <h2>Response</h2>
+            <p id="response">Responses will appear here</p>
+        </div>
+        
+        <div class="command-examples">
+            <h3>Example Commands</h3>
+            <ul>
+                <li>"Add appointment at next Monday"</li>
+                <li>"Show my appointments"</li>
+                <li>"Show available doctors"</li>
+                <li>"List 3 hospitals"</li>
+                <li>"What disease starts with A"</li>
+                <li>"Show my patients"</li>
+                <li>"Show heart rate"</li>
+                <li>"Show health news"</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const micButton = document.getElementById('micButton');
+            const status = document.getElementById('status');
+            const transcription = document.getElementById('transcription');
+            const response = document.getElementById('response');
+            
+            let recognition;
+            let isListening = false;
+            
+            // Initialize speech recognition
+            function initSpeechRecognition() {
+                // Check browser support
+                if (!('webkitSpeechRecognition' in window) && 
+                    !('SpeechRecognition' in window)) {
+                    status.textContent = "Speech recognition not supported in this browser";
+                    micButton.disabled = true;
+                    return;
+                }
+                
+                // Create speech recognition instance
+                recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'en-US';
+                
+                // Configure event handlers
+                recognition.onstart = function() {
+                    status.textContent = "Listening...";
+                    micButton.classList.add('listening', 'pulse');
+                    isListening = true;
+                };
+                
+                recognition.onresult = function(event) {
+                    const command = event.results[0][0].transcript;
+                    transcription.textContent = `Command: "${command}"`;
+                    processCommand(command);
+                };
+                
+                recognition.onerror = function(event) {
+                    if (event.error === 'no-speech') {
+                        status.textContent = "No speech detected. Try again.";
+                    } else {
+                        status.textContent = `Error: ${event.error}`;
+                        console.error('Speech recognition error:', event.error);
+                    }
+                    micButton.classList.remove('listening', 'pulse');
+                    isListening = false;
+                };
+                
+                recognition.onend = function() {
+                    status.textContent = "Click the microphone to start";
+                    micButton.classList.remove('listening', 'pulse');
+                    isListening = false;
+                };
+            }
+            
+            // Process the voice command
+            function processCommand(command) {
+                status.textContent = "Processing command...";
+                response.textContent = "Processing...";
+                
+                // Send the command to the server
+                fetch('/process-command', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ command: command })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    response.textContent = data.response;
+                    // Speak the response
+                    speakResponse(data.response);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    response.textContent = "Error processing your command. Please try again.";
+                    status.textContent = "Error occurred";
+                });
+            }
+            
+            // Use text-to-speech to speak the response
+            function speakResponse(text) {
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    window.speechSynthesis.speak(utterance);
+                }
+            }
+            
+            // Toggle listening
+            micButton.addEventListener('click', function() {
+                if (isListening) {
+                    recognition.stop();
+                } else {
+                    transcription.textContent = "";
+                    response.textContent = "Responses will appear here";
+                    recognition.start();
+                }
+            });
+            
+            // Initialize speech recognition
+            initSpeechRecognition();
+            
+            // For testing purposes - simulates API response when developing without backend
+            window.simulateResponse = function(command) {
+                const testResponses = {
+                    "add appointment": "Appointment added successfully for Monday, 2025-03-10. Age: Unknown, Gender: Unknown.",
+                    "show my appointments": "Appointment with Dr. Smith on 2025-03-12 at 10:00 AM.",
+                    "list hospitals": "Here are the nearest hospitals: 1. City Hospital located at 123 Main St. 2. Community Medical Center located at 456 Park Ave.",
+                    "show available doctors": "Here are the available doctors: Dr. Smith (Cardiology), Dr. Johnson (Pediatrics).",
+                    "what disease starts with a": "Diseases that start with A: Asthma, Arthritis, Alzheimer's",
+                    "show heart rate": "Your latest heart rate is 72 bpm, and blood oxygen level is 98%.",
+                };
+                
+                // Find matching test response
+                let matchedResponse = "I'm sorry, I don't understand that command.";
+                for (const key in testResponses) {
+                    if (command.toLowerCase().includes(key)) {
+                        matchedResponse = testResponses[key];
+                        break;
+                    }
+                }
+                
+                return { response: matchedResponse };
+            };
+        });
+    </script>
+</body>
+</html>
