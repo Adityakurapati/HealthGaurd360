@@ -9,7 +9,6 @@ import os
 
 print("Starting command classifier training...")
 
-# Sample data - replace with your actual data
 data = {
     'text': [
         'Add an appointment with Dr. Smith',

@@ -1,0 +1,644 @@
+/* Modern color variables for easy theming */
+:root {
+        --primary: #06b6d4;
+        --primary-dark: #0891b2;
+        --primary-light: #22d3ee;
+        --accent: #14b8a6;
+        --accent-light: #5eead4;
+        --dark-bg: #0f172a;
+        --card-bg: rgba(15, 23, 42, 0.8);
+        --text-light: #f0f9ff;
+        --text-gray: #94a3b8;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+}
+
+/* Advanced animations */
+@keyframes fade-in {
+        0% {
+                opacity: 0;
+                transform: translateY(20px);
+        }
+
+        100% {
+                opacity: 1;
+                transform: translateY(0);
+        }
+}
+
+@keyframes pulse {
+
+        0%,
+        100% {
+                transform: scale(1);
+                opacity: 1;
+        }
+
+        50% {
+                transform: scale(1.05);
+                opacity: 0.9;
+        }
+}
+
+@keyframes float {
+
+        0%,
+        100% {
+                transform: translateY(0);
+        }
+
+        50% {
+                transform: translateY(-10px);
+        }
+}
+
+@keyframes glow {
+
+        0%,
+        100% {
+                box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+        }
+
+        50% {
+                box-shadow: 0 0 20px rgba(6, 182, 212, 0.8);
+        }
+}
+
+@keyframes spin {
+        to {
+                transform: rotate(360deg);
+        }
+}
+
+@keyframes gradient-shift {
+        0% {
+                background-position: 0% 50%;
+        }
+
+        50% {
+                background-position: 100% 50%;
+        }
+
+        100% {
+                background-position: 0% 50%;
+        }
+}
+
+.animateFadeIn {
+        animation: fade-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* Enhanced container with dynamic gradient */
+.container {
+        min-height: 100vh;
+        background-image: linear-gradient(135deg, #1e3a8a, #312e81, #1e40af);
+        background-size: 400% 400%;
+        animation: gradient-shift 15s ease infinite;
+        padding: 3rem 1rem;
+        transition: all 0.5s ease;
+        position: relative;
+        overflow: hidden;
+}
+
+/* Floating particles effect */
+.container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image:
+                radial-gradient(circle at 20% 30%, rgba(6, 182, 212, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(20, 184, 166, 0.1) 0%, transparent 20%);
+        pointer-events: none;
+}
+
+/* Attractive header with floating animation */
+.header {
+        text-align: center;
+        margin-bottom: 4rem;
+        animation: float 6s ease-in-out infinite;
+}
+
+.headerTitle {
+        font-size: 3.5rem;
+        font-weight: 800;
+        letter-spacing: -0.025em;
+        background-image: linear-gradient(to right, #22d3ee, #5eead4, #22d3ee);
+        background-size: 200% auto;
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        animation: gradient-shift 3s linear infinite;
+        margin-bottom: 1rem;
+        text-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+}
+
+.headerText {
+        font-size: 1.25rem;
+        color: #a5f3fc;
+        max-width: 36rem;
+        margin: 0 auto;
+        line-height: 1.6;
+        transition: color 0.3s ease;
+}
+
+.header:hover .headerText {
+        color: white;
+}
+
+/* Enhanced card with glass morphism and interaction */
+.card {
+        background-color: var(--card-bg);
+        border-radius: 1.5rem;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        margin-bottom: 3rem;
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(6, 182, 212, 0.2);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transform: translateY(0);
+}
+
+.card:hover {
+        box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.3), 0 0 15px rgba(6, 182, 212, 0.5);
+        transform: translateY(-0.5rem) scale(1.01);
+        border-color: rgba(6, 182, 212, 0.6);
+}
+
+.cardHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+        padding-bottom: 1rem;
+}
+
+.cardTitle {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #67e8f9;
+        position: relative;
+        padding-left: 1rem;
+        transition: all 0.3s ease;
+}
+
+.cardTitle::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0.25rem;
+        bottom: 0.25rem;
+        width: 4px;
+        background-color: var(--primary);
+        border-radius: 2px;
+        transition: all 0.3s ease;
+}
+
+.card:hover .cardTitle {
+        color: white;
+}
+
+.card:hover .cardTitle::before {
+        background-color: var(--accent);
+        transform: scaleY(1.2);
+}
+
+/* Interactive button with hover effects */
+.clearButton {
+        padding: 0.625rem 1.5rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #67e8f9;
+        background-color: rgba(15, 23, 42, 0.7);
+        border: 1px solid #0e7490;
+        border-radius: 0.75rem;
+        transition: all 0.25s ease;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+}
+
+.clearButton::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.2), transparent);
+        transition: all 0.4s ease;
+        z-index: -1;
+}
+
+.clearButton:hover {
+        color: white;
+        border-color: var(--primary-light);
+        box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+        transform: translateY(-2px);
+}
+
+.clearButton:hover::before {
+        left: 100%;
+}
+
+.clearButton:active {
+        transform: translateY(0);
+        box-shadow: 0 0 5px rgba(6, 182, 212, 0.3);
+}
+
+/* Advanced search input with interactive effects */
+.searchContainer {
+        position: relative;
+        margin-bottom: 2rem;
+        transition: all 0.3s ease;
+}
+
+.searchContainer:focus-within {
+        transform: scale(1.01);
+}
+
+.searchIcon {
+        position: absolute;
+        left: 1rem;
+        top: 0.875rem;
+        color: #0891b2;
+        transition: all 0.3s ease;
+}
+
+.searchContainer:hover .searchIcon,
+.searchContainer:focus-within .searchIcon {
+        color: #22d3ee;
+        transform: scale(1.1);
+}
+
+.searchInput {
+        width: 100%;
+        padding: 0.875rem 1rem 0.875rem 3rem;
+        background-color: rgba(31, 41, 55, 0.8);
+        border: 1px solid rgba(21, 94, 117, 0.7);
+        border-radius: 1rem;
+        transition: all 0.3s ease;
+        color: white;
+        font-size: 1rem;
+}
+
+.searchInput::placeholder {
+        color: rgba(8, 145, 178, 0.7);
+        transition: all 0.3s ease;
+}
+
+.searchInput:focus {
+        outline: none;
+        background-color: rgba(31, 41, 55, 0.95);
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.3);
+}
+
+.searchInput:hover {
+        border-color: var(--primary);
+}
+
+.searchInput:focus::placeholder {
+        opacity: 0.5;
+        transform: translateX(5px);
+}
+
+/* Enhanced scrollbar */
+.customScrollbar::-webkit-scrollbar {
+        width: 8px;
+}
+
+.customScrollbar::-webkit-scrollbar-track {
+        background: rgba(15, 23, 42, 0.3);
+        border-radius: 10px;
+}
+
+.customScrollbar::-webkit-scrollbar-thumb {
+        background: rgba(20, 184, 166, 0.5);
+        border-radius: 10px;
+        border: 2px solid transparent;
+        background-clip: padding-box;
+        transition: all 0.3s ease;
+}
+
+.customScrollbar::-webkit-scrollbar-thumb:hover {
+        background: rgba(20, 184, 166, 0.8);
+        background-clip: padding-box;
+}
+
+/* Symptoms container with improved interaction */
+.symptomsContainer {
+        height: 16rem;
+        overflow-y: auto;
+        padding-right: 0.5rem;
+        border-radius: 0.75rem;
+        transition: all 0.3s ease;
+}
+
+.symptomsGrid {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 0.75rem;
+        transition: all 0.3s ease;
+}
+
+@media (min-width: 640px) {
+        .symptomsGrid {
+                grid-template-columns: repeat(2, 1fr);
+        }
+}
+
+@media (min-width: 1024px) {
+        .symptomsGrid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 1rem;
+        }
+}
+
+/* Interactive symptom item */
+.symptomItem {
+        display: flex;
+        align-items: center;
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.symptomItem:hover {
+        transform: scale(1.05);
+        z-index: 1;
+}
+
+.symptomInput {
+        display: none;
+}
+
+.symptomLabel {
+        flex: 1;
+        padding: 1rem;
+        border-radius: 0.75rem;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transform: scale(1);
+        user-select: none;
+        text-transform: capitalize;
+        font-weight: 500;
+        letter-spacing: 0.01em;
+}
+
+.symptomLabelUnselected {
+        background-color: rgba(31, 41, 55, 0.7);
+        color: #e0f2fe;
+        border: 1px solid rgba(55, 65, 81, 0.7);
+}
+
+.symptomLabelUnselected:hover {
+        border-color: rgba(6, 182, 212, 0.8);
+        box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.15), 0 0 8px rgba(6, 182, 212, 0.3);
+        color: white;
+}
+
+.symptomLabelSelected {
+        background-image: linear-gradient(135deg, #0891b2, #14b8a6);
+        color: white;
+        border: 1px solid transparent;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 0 8px rgba(6, 182, 212, 0.4);
+        transform: scale(1.05);
+        font-weight: 600;
+}
+
+/* Animated loading spinner */
+.loadingSpinner {
+        display: flex;
+        justify-content: center;
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+}
+
+.spinner {
+        position: relative;
+        width: 4rem;
+        height: 4rem;
+}
+
+.spinner::before,
+.spinner::after {
+        content: '';
+        position: absolute;
+        border-radius: 50%;
+        animation: spin 1.8s linear infinite;
+}
+
+.spinner::before {
+        width: 100%;
+        height: 100%;
+        border: 4px solid transparent;
+        border-top-color: var(--primary-light);
+        border-bottom-color: var(--accent);
+}
+
+.spinner::after {
+        width: 70%;
+        height: 70%;
+        border: 4px solid transparent;
+        border-left-color: var(--primary);
+        border-right-color: var(--accent-light);
+        top: 15%;
+        left: 15%;
+        animation-duration: 1s;
+        animation-direction: reverse;
+}
+
+/* Enhanced error display */
+.errorContainer {
+        background-color: rgba(127, 29, 29, 0.6);
+        border-left: 4px solid var(--danger);
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+        animation: fade-in 0.5s ease forwards;
+        backdrop-filter: blur(8px);
+        transition: all 0.3s ease;
+}
+
+.errorContainer:hover {
+        background-color: rgba(127, 29, 29, 0.8);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(239, 68, 68, 0.3);
+}
+
+.errorContent {
+        display: flex;
+        align-items: center;
+}
+
+.errorIconContainer {
+        flex-shrink: 0;
+        transition: all 0.3s ease;
+}
+
+.errorContainer:hover .errorIconContainer {
+        transform: scale(1.1);
+}
+
+.errorText {
+        margin-left: 1rem;
+        color: #fca5a5;
+        font-weight: 500;
+}
+
+/* Prediction results container with staggered animations */
+.predictionContainer {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+}
+
+.sectionTitle {
+        font-size: 2rem;
+        font-weight: 700;
+        background-image: linear-gradient(to right, #22d3ee, #5eead4);
+        background-size: 200% auto;
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        margin-bottom: 1.5rem;
+        position: relative;
+        padding-bottom: 0.5rem;
+        animation: gradient-shift 3s linear infinite;
+}
+
+.sectionTitle::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 3rem;
+        height: 3px;
+        background-image: linear-gradient(to right, var(--primary), var(--accent));
+        border-radius: 3px;
+        transition: width 0.3s ease;
+}
+
+.card:hover .sectionTitle::after {
+        width: 5rem;
+}
+
+.diseaseName {
+        font-size: 1.75rem;
+        color: white;
+        font-weight: 600;
+        position: relative;
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background-color: rgba(8, 145, 178, 0.2);
+        border-radius: 0.5rem;
+        border-left: 3px solid var(--primary);
+        transition: all 0.3s ease;
+}
+
+.diseaseName:hover {
+        background-color: rgba(8, 145, 178, 0.3);
+        transform: translateX(5px);
+}
+
+.descriptionText {
+        color: #e0f2fe;
+        line-height: 1.8;
+        font-size: 1.05rem;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
+}
+
+.card:hover .descriptionText {
+        color: white;
+        background-color: rgba(31, 41, 55, 0.3);
+}
+
+/* Interactive list items */
+.itemsList {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+}
+
+.listItem {
+        display: flex;
+        align-items: flex-start;
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
+        background-color: rgba(31, 41, 55, 0.2);
+}
+
+.listItem:hover {
+        transform: translateX(0.5rem);
+        background-color: rgba(31, 41, 55, 0.5);
+        box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.1);
+}
+
+.listItemDot {
+        flex-shrink: 0;
+        height: 0.5rem;
+        width: 0.5rem;
+        margin-top: 0.5rem;
+        border-radius: 9999px;
+        background-color: var(--primary);
+        margin-right: 0.75rem;
+        transition: all 0.3s ease;
+}
+
+.listItem:hover .listItemDot {
+        background-color: var(--accent-light);
+        transform: scale(1.5);
+        box-shadow: 0 0 8px var(--accent-light);
+}
+
+.listItemText {
+        color: #e0f2fe;
+        transition: all 0.3s ease;
+        font-weight: 400;
+}
+
+.listItem:hover .listItemText {
+        color: white;
+        font-weight: 500;
+}
+
+/* Responsive enhancements */
+@media (max-width: 640px) {
+        .headerTitle {
+                font-size: 2.5rem;
+        }
+
+        .card {
+                padding: 1.5rem;
+        }
+
+        .sectionTitle {
+                font-size: 1.5rem;
+        }
+
+        .diseaseName {
+                font-size: 1.25rem;
+        }
+}
+
+/* Dark mode optimizations */
+@media (prefers-color-scheme: dark) {
+        .card {
+                background-color: rgba(15, 23, 42, 0.85);
+        }
+
+        .searchInput {
+                background-color: rgba(31, 41, 55, 0.9);
+        }
+
+        .symptomLabelUnselected {
+                background-color: rgba(31, 41, 55, 0.8);
+        }
+}
